@@ -29,35 +29,38 @@
   </table>
 
   <script>
-    // Reemplaza con la URL de tu aplicación web de Google Apps Script
     const scriptUrl = 'https://script.google.com/macros/s/AKfycbwJI1Dg4f9yZzxo4Oj_8xA3ONr1a9B_TjkG3UOZhaaZ6TQSi0-vWQjM4yoK-qd8jjxe3Q/exec';
 
     async function fetchData() {
       try {
         const response = await fetch(scriptUrl);
         const data = await response.json();
-        
-        const tableHeader = document.getElementById('table-header');
-        const tableBody = document.getElementById('table-body');
-        
-        // Agregar encabezados de tabla
-        const headers = data[0];
-        headers.forEach(header => {
-          const th = document.createElement('th');
-          th.textContent = header;
-          tableHeader.appendChild(th);
-        });
-        
-        // Agregar filas de datos
-        data.slice(1).forEach(row => {
-          const tr = document.createElement('tr');
-          row.forEach(cell => {
-            const td = document.createElement('td');
-            td.textContent = cell;
-            tr.appendChild(td);
+
+        if (data && data.length) {
+          const tableHeader = document.getElementById('table-header');
+          const tableBody = document.getElementById('table-body');
+
+          // Agregar encabezados de tabla
+          const headers = data[0];
+          headers.forEach(header => {
+            const th = document.createElement('th');
+            th.textContent = header;
+            tableHeader.appendChild(th);
           });
-          tableBody.appendChild(tr);
-        });
+
+          // Agregar filas de datos
+          data.slice(1).forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(cell => {
+              const td = document.createElement('td');
+              td.textContent = cell;
+              tr.appendChild(td);
+            });
+            tableBody.appendChild(tr);
+          });
+        } else {
+          console.error('No hay datos para mostrar.');
+        }
       } catch (error) {
         console.error('Error al cargar los datos:', error);
       }
