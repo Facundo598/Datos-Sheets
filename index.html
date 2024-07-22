@@ -33,12 +33,19 @@
 
     async function fetchData() {
       try {
+        console.log('Iniciando la solicitud fetch...'); // Mensaje de depuración
         const response = await fetch(scriptUrl);
+        console.log('Respuesta recibida:', response); // Mensaje de depuración
         const data = await response.json();
+        console.log('Datos JSON recibidos:', data); // Mensaje de depuración
 
         if (data && data.length) {
           const tableHeader = document.getElementById('table-header');
           const tableBody = document.getElementById('table-body');
+
+          // Limpiar la tabla antes de agregar datos
+          tableHeader.innerHTML = '';
+          tableBody.innerHTML = '';
 
           // Agregar encabezados de tabla
           const headers = data[0];
@@ -58,11 +65,13 @@
             });
             tableBody.appendChild(tr);
           });
+
+          console.log('Datos agregados a la tabla.'); // Mensaje de depuración
         } else {
-          console.error('No hay datos para mostrar.');
+          console.warn('No hay datos para mostrar.'); // Mensaje de depuración
         }
       } catch (error) {
-        console.error('Error al cargar los datos:', error);
+        console.error('Error al cargar los datos:', error); // Mensaje de depuración
       }
     }
 
@@ -70,3 +79,4 @@
   </script>
 </body>
 </html>
+
