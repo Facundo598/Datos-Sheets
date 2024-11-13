@@ -3,96 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Datos de Google Sheets</title>
+  <title>Página Restringida</title>
   <style>
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
+    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
   </style>
 </head>
 <body>
-  <h1>Datos de Google Sheets</h1>
-  <table id="data-table">
-    <thead>
-      <tr id="table-header"></tr>
-    </thead>
-    <tbody id="table-body"></tbody>
-  </table>
+  <h1>Bienvenido a mi página sin navegación</h1>
+  <p>Esta página no permite el clic derecho ni el uso de F12.</p>
 
   <script>
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwJI1Dg4f9yZzxo4Oj_8xA3ONr1a9B_TjkG3UOZhaaZ6TQSi0-vWQjM4yoK-qd8jjxe3Q/exec';
-
-    async function fetchData() {
-      try {
-        console.log('Iniciando la solicitud fetch...');
-        
-        // Agrega el proxy a la URL del script
-        const url = proxyUrl + scriptUrl;
-        console.log('URL de solicitud:', url);
-
-        const response = await fetch(url);
-
-        // Verifica si la respuesta es correcta
-        if (!response.ok) {
-          console.error('Error en la respuesta del servidor:', response.status, response.statusText);
-          return;
-        }
-
-        console.log('Respuesta recibida:', response);
-
-        const data = await response.json();
-        console.log('Datos JSON recibidos:', data);
-
-        // Llama a la función para mostrar los datos en la tabla
-        displayData(data);
-
-      } catch (error) {
-        console.error('Error al cargar los datos:', error);
+    // Desactivar clic derecho
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    // Desactivar teclas de acceso a las herramientas de desarrollo
+    document.onkeydown = function(e) {
+      if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
+        e.preventDefault();
       }
-    }
-
-    function displayData(data) {
-      const tableHeader = document.getElementById('table-header');
-      const tableBody = document.getElementById('table-body');
-
-      // Limpia la tabla antes de agregar nuevos datos
-      tableHeader.innerHTML = '';
-      tableBody.innerHTML = '';
-      
-      // Agregar encabezados de tabla
-      const headers = data[0];
-      console.log('Encabezados:', headers);
-      headers.forEach(header => {
-        const th = document.createElement('th');
-        th.textContent = header;
-        tableHeader.appendChild(th);
-      });
-
-      // Agregar filas de datos
-      console.log('Datos de filas:', data.slice(1));
-      data.slice(1).forEach(row => {
-        const tr = document.createElement('tr');
-        row.forEach(cell => {
-          const td = document.createElement('td');
-          td.textContent = cell;
-          tr.appendChild(td);
-        });
-        tableBody.appendChild(tr);
-      });
-    }
-
-    // Llama a la función para obtener y mostrar los datos
-    fetchData();
+    };
   </script>
 </body>
 </html>
